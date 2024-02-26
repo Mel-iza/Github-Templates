@@ -8,6 +8,7 @@ templates:
       Thank you for submitting a feature proposal!
       Please provide a detailed description of your proposed feature.
       -->
+    url: .github/ISSUE_TEMPLATE/issue_template-feature-proposal.yml
 
   - name: Issue Bug Report
     about: Please report security vulnerabilities here.
@@ -16,5 +17,6 @@ templates:
       <!--
       Thank you for submitting a bug report!
       Please provide a clear and concise description of the issue.
-      -->
+      -->https://github.com/Mel-iza/Github-Templates/blob/main
+    url: .github/ISSUE_TEMPLATE/issue_template-bug-report.yml 
 
