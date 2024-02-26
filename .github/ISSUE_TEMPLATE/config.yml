@@ -1,4 +1,4 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 templates:
   - name: Issue Feature Proposal
     about: Please propose new features here.
@@ -19,6 +19,6 @@ templates:
       <!--
       Thank you for submitting a bug report!
       Please provide a clear and concise description of the issue.
-      -->https://github.com/Mel-iza/Github-Templates/blob/main
+      -->
     
 
