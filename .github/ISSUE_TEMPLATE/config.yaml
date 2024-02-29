@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name:  Issue Bug Report
+    url: /.github/ISSUE_TEMPLATE/issue_template-bug-report.yml
+    about: Please ask and answer questions here.
+  - name: Issue Feature Proposal
+    url: /.github/ISSUE_TEMPLATE/issue_template-feature-proposal.yml
+    about: Please report security vulnerabilities here.
