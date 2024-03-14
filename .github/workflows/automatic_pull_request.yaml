@@ -1,0 +1,16 @@
+name: testing and automatic pull request template via github actions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs: 
+  updateAuthor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checking out code
+      - uses: actions/checkout@v2
+
+      - name: extract git commit data
+      - uses: 
