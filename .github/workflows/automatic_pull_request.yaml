@@ -27,7 +27,7 @@ jobs:
           template: .github/PULL_REQUEST_TEMPLATE/build.md
           vars: | 
             user_commit: ${{ github.actor }}
-            user_reviewer: 'user_reviewer@example.com'
+            user_reviewer: ${{ github.actor }}
             label: 'automatic-pr'
       
       - name: Create Pull Request
@@ -42,4 +42,4 @@ jobs:
             User who committed: ${{ steps.template.outputs.user_commit }}
             User who can review: ${{ steps.template.outputs.user_reviewer }}
             Label: ${{ steps.template.outputs.label }}
-          branch: main
+          branch: auto-pull-request     # Nomeie o branch conforme desejado
