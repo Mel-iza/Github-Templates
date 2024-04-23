@@ -21,6 +21,7 @@ jobs:
           echo "::set-output name=type::$type"
 
       - name: Update AUTHORS
+        id: authors
         run: |
           git log --format='%aN <%aE>%n%cN <%cE>' | sort -u > AUTHORS
     
@@ -35,18 +36,20 @@ jobs:
             label: ${{ steps.read_yaml.outputs.type }}
       
       - name: Create Pull Request
+        id: pr
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Auto-generated PR with template
-          title: Automatically generated PR
-          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          title: '[${{ steps.read_yaml.outputs.type }}]: '
+          committer: ${{ github.actor }}
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          label: ${{ steps.read_yaml.outputs.type }}
           delete-branch: false
           body: |
             This is an auto-generated PR with a template.
             User who committed: ${{ steps.template.outputs.user_commit }}
             User who can review: ${{ steps.template.outputs.user_reviewer }}
             Label: ${{ steps.template.outputs.label }}
-            template:  ${{ steps.template }}
+            template:  ${{ steps.template. }}
           branch: auto-pull-request     
