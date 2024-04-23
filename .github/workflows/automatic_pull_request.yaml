@@ -4,13 +4,42 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'teste.yaml'
 
 jobs: 
-  updateAuthor:
+  updateAuthors:
     runs-on: ubuntu-latest
     steps:
       - name: checking out code
-      - uses: actions/checkout@v2
-
-      - name: extract git commit data
-      - uses: 
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      - name: Update AUTHORS
+        run: |
+          git log --format='%aN <%aE>%n%cN <%cE>' | sort -u > AUTHORS
+    
+      - name: Render template
+        id: template
+        uses: chuhlomin/render-template@v1.4
+        with:
+          template: .github/PULL_REQUEST_TEMPLATE/build.md
+          vars: | 
+            user_commit: ${{ github.actor }}
+            user_reviewer: 'user_reviewer@example.com'
+            label: 'automatic-pr'
+      
+      - name: Create Pull Request
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Auto-generated PR with template
+          title: Automatically generated PR
+          body: |
+            This is an auto-generated PR with a template.
+            User who committed: ${{ steps.template.outputs.user_commit }}
+            User who can review: ${{ steps.template.outputs.user_reviewer }}
+            Label: ${{ steps.template.outputs.label }}
+          branch: main
