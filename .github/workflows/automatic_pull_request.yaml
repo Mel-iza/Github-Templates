@@ -27,7 +27,7 @@ jobs:
           template: .github/PULL_REQUEST_TEMPLATE/build.md
           vars: | 
             user_commit: ${{ github.actor }}
-            user_reviewer: ${{ github.actor }}
+            user_reviewer: 'user_reviewer@example.com'
             label: 'automatic-pr'
       
       - name: Create Pull Request
