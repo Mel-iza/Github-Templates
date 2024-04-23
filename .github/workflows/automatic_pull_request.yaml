@@ -42,4 +42,5 @@ jobs:
             User who committed: ${{ steps.template.outputs.user_commit }}
             User who can review: ${{ steps.template.outputs.user_reviewer }}
             Label: ${{ steps.template.outputs.label }}
-          branch: auto-pull-request     # Nomeie o branch conforme desejado
+          branch: auto-pull-request   
+
