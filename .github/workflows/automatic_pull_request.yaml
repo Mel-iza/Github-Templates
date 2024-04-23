@@ -19,7 +19,7 @@ jobs:
         run: |
           type=$(grep 'type:' teste.yaml | awk '{print $2}')
           echo "::set-output name=type::$type"
-      
+
       - name: Update AUTHORS
         run: |
           git log --format='%aN <%aE>%n%cN <%cE>' | sort -u > AUTHORS
@@ -28,7 +28,7 @@ jobs:
         id: template
         uses: chuhlomin/render-template@v1.4
         with:
-          template: .github/PULL_REQUEST_TEMPLATE/build.md
+          template: chmod +x .github/PULL_REQUEST_TEMPLATE/build.md
           vars: | 
             user_commit: ${{ github.actor }}
             user_reviewer: 'user_reviewer@example.com'
@@ -40,9 +40,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Auto-generated PR with template
           title: Automatically generated PR
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          delete-branch: false
           body: |
             This is an auto-generated PR with a template.
             User who committed: ${{ steps.template.outputs.user_commit }}
             User who can review: ${{ steps.template.outputs.user_reviewer }}
             Label: ${{ steps.template.outputs.label }}
+            template:  ${{ steps.template }}
           branch: auto-pull-request     
