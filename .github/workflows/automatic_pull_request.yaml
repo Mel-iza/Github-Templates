@@ -24,10 +24,6 @@ jobs:
         run: |
           git log --format='%aN <%aE>%n%cN <%cE>' | sort -u > AUTHORS
     
-      - name: get permission to access template folder
-        run: |
-          chmod +x ./Github-Templates/.github/PULL_REQUEST_TEMPLATE
-
       - name: Render template
         id: template
         uses: chuhlomin/render-template@v1.4
