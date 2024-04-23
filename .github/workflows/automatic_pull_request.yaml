@@ -52,4 +52,4 @@ jobs:
             User who can review: ${{ steps.template.outputs.user_reviewer }}
             Label: ${{ steps.template.outputs.label }}
             template:  ${{ steps.template. }}
-     
+          branch: main     
