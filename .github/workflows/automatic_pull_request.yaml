@@ -18,38 +18,52 @@ jobs:
         id: read_yaml
         run: |
           type=$(grep 'type:' teste.yaml | awk '{print $2}')
+          delete_branch=$(grep 'delete_branch_after_push:' teste.yaml | awk '{print $2}')
           echo "::set-output name=type::$type"
-
-      - name: Update AUTHORS
-        id: authors
-        run: |
-          git log --format='%aN <%aE>%n%cN <%cE>' | sort -u > AUTHORS
+          echo "::set-output name=delete_branch::$delete_branch"
     
       - name: Render template
         id: template
         uses: chuhlomin/render-template@v1.4
         with:
-          template: .github/test-pull_request_template.md
+          template: | 
+            if [ "${type}" == 'training' ]; then
+                template='.github/build.md'
+            elif [ "${type}" == 'code_update' ]; then
+                template='.github/review.md' 
+            else
+                template='.github/test-pull_request_template.md'
+            fi      
           vars: | 
-            user_commit: ${{ github.actor }}
-            user_reviewer: 'user_reviewer@example.com'
-            label: ${{ steps.read_yaml.outputs.type }}
+            user_commit="${{ github.actor }}"
+            user_reviewer='user_reviewer@example.com'
+            label="${{ steps.read_yaml.outputs.type }}"
+
+      - name: Extract commit data
+        id: commit_data      
+        uses: rlespinasse/git-commit-data-action@v1.x
       
       - name: Create Pull Request
-        id: pr
+        id: creating_pr
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Auto-generated PR with template
-          title: '[${{ steps.read_yaml.outputs.type }}]: '
-          committer: ${{ github.actor }}
-          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          label: ${{ steps.read_yaml.outputs.type }}
-          delete-branch: false
+          commit-message: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}
+          title: '[${{ steps.read_yaml.outputs.type }}]: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}'
+          committer: ${{ env.GIT_COMMIT_COMMITTER }}
+          author: ${{ env.GIT_COMMIT_AUTHOR }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          label: | 
+            ${{ steps.read_yaml.outputs.type }}
+            automated_pull_request
+          reviewers: ''
+          assignees: ${{ env.GIT_COMMIT_AUTHOR }}
+          delete-branch: ${{ steps.read_yaml.outputs.delete_branch }}
           body: |
-            This is an auto-generated PR with a template.
+            $(date +%d-%m-%Y) | This is an auto-generated PR with a template.
+            ${{ steps.template.outputs.result }}
             User who committed: ${{ steps.template.outputs.user_commit }}
             User who can review: ${{ steps.template.outputs.user_reviewer }}
             Label: ${{ steps.template.outputs.label }}
-            template:  ${{ steps.template }}
-          branch: main     
+            template:  ${{template}}
+          body-path: ${{template}}
+          branch: pr-branch
