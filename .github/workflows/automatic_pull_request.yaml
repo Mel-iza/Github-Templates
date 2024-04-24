@@ -64,5 +64,5 @@ jobs:
             User who committed: ${{ steps.template.outputs.user_commit }}
             User who can review: ${{ steps.template.outputs.user_reviewer }}
             Label: ${{ steps.template.outputs.label }}
-          body-path: ${{template}}
+          body-path: ${{ steps.template.outputs.result }}
           branch: pr-branch
