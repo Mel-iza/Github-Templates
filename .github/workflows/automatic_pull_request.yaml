@@ -35,13 +35,17 @@ jobs:
                 template='.github/test-pull_request_template.md'
             fi      
           vars: | 
-            user_commit="${{ github.actor }}"
-            user_reviewer='user_reviewer@example.com'
-            label="${{ steps.read_yaml.outputs.type }}"
+            user_commit: "${{ github.actor }}"
+            user_reviewer: 'user_reviewer@example.com'
+            label: "${{ steps.read_yaml.outputs.type }}"
 
       - name: Extract commit data
         id: commit_data      
         uses: rlespinasse/git-commit-data-action@v1.x
+
+      - name: Assingees and reviewers
+        id: assingees_reviewers
+        uses: kentaro-m/auto-assign-action@v2.0.0
       
       - name: Create Pull Request
         id: creating_pr

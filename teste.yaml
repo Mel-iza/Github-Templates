@@ -2,7 +2,7 @@ name: name
 year: 2024
 color: red
 label: maçã
-value: 4
+value: 3
 
 pull_request:
   update_type: training # ['training', 'code_update', 'bug']
