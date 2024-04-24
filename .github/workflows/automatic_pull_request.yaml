@@ -27,7 +27,7 @@ jobs:
         uses: chuhlomin/render-template@v1.4
         with:
           template: | 
-            echo ".github/build.md"'
+             echo ${{ if eq(steps.read_yaml.outputs.type, 'training') }}'.github/build.md'{{ else if eq(steps.read_yaml.outputs.type, 'code_update') }}'.github/review.md'{{ else }}'.github/test-pull_request_template.md'{{ end }}
           vars: | 
              user_commit: "${{ github.actor }}"
              user_reviewer: 'user_reviewer@example.com'
