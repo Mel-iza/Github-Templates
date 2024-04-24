@@ -27,17 +27,11 @@ jobs:
         uses: chuhlomin/render-template@v1.4
         with:
           template: | 
-            if [ "${type}" == 'training' ]; then
-                template='.github/build.md'
-            elif [ "${type}" == 'code_update' ]; then
-                template='.github/review.md' 
-            else
-                template='.github/test-pull_request_template.md'
-            fi      
+            echo ".github/build.md"'
           vars: | 
-            user_commit: "${{ github.actor }}"
-            user_reviewer: 'user_reviewer@example.com'
-            label: "${{ steps.read_yaml.outputs.type }}"
+             user_commit: "${{ github.actor }}"
+             user_reviewer: 'user_reviewer@example.com'
+             label: "${{ steps.read_yaml.outputs.type }}"
 
       - name: Extract commit data
         id: commit_data      
